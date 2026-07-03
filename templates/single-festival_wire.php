@@ -19,28 +19,30 @@ get_header(); ?>
 		// Display breadcrumbs using theme function
 		extrachill_breadcrumbs();
 
-		while ( have_posts() ) : the_post();
-		?>
+		while ( have_posts() ) :
+			the_post();
+			?>
 	
 <div class="single-post-card">
 <article id="post-<?php the_ID(); ?>" <?php post_class( array( 'festival-wire-single-post', 'single-post' ) ); ?>>
-	<?php do_action('extrachill_before_post_content'); ?>
+			<?php do_action('extrachill_before_post_content'); ?>
 				<header class="ec-edge-gutter">
 					<?php do_action( 'extrachill_above_post_title' ); ?>
 					<?php the_title( '<h1>', '</h1>' ); ?>
 				</header>
 				<?php extrachill_entry_meta(); ?>
 
-				<?php 
+				<?php
 				// Display featured image
-				if ( has_post_thumbnail() ) { ?>
+				if ( has_post_thumbnail() ) {
+					?>
 					<div class="post-thumbnail">
 						<?php the_post_thumbnail( 'large' ); ?>
-						<?php 
+						<?php
 						// Display image caption if available
-						$thumbnail_id = get_post_thumbnail_id();
+						$thumbnail_id      = get_post_thumbnail_id();
 						$thumbnail_caption = get_post($thumbnail_id)->post_excerpt;
-						if (!empty($thumbnail_caption)) {
+						if ( ! empty($thumbnail_caption) ) {
 							echo '<div class="featured-image-caption">' . wp_kses_post($thumbnail_caption) . '</div>';
 						}
 						?>
@@ -58,7 +60,7 @@ get_header(); ?>
 					?>
 				</div><!-- .entry-content -->
 
-	<?php do_action('extrachill_after_post_content'); ?>
+			<?php do_action('extrachill_after_post_content'); ?>
 			</article><!-- #post-<?php the_ID(); ?> -->
 </div>
 
@@ -67,57 +69,58 @@ get_header(); ?>
 <aside>
 	<?php
 	// Related festival wire posts (Cached)
-			$current_post_id = get_the_ID();
+			$current_post_id   = get_the_ID();
 			$current_festivals = get_the_terms(get_the_ID(), 'festival');
-			
-			if (!empty($current_festivals) && !is_wp_error($current_festivals)) {
-				$festival_term_id = $current_festivals[0]->term_id;
-				$festival_name = $current_festivals[0]->name;
-				
-				// Get related posts directly
-				$related_posts = get_posts(array(
-					'post_type' => 'festival_wire',
-					'numberposts' => 6,
-					'post__not_in' => array($current_post_id),
-					'tax_query' => array(
-						array(
-							'taxonomy' => 'festival',
-							'field' => 'term_id',
-							'terms' => $festival_term_id
-						)
-					)
-				));
-				
-				if (!empty($related_posts)) {
-					echo '<div class="related-tax-section related-festival-wire">';
-					echo '<h3 class="related-tax-header">' . sprintf(esc_html__('Related %s News', 'extrachill'), esc_html($festival_name)) . '</h3>';
-					echo '<div class="related-tax-grid festival-wire-grid">';
 
-					// Set up global post data for template parts
-					global $post;
-					foreach ($related_posts as $related_post) {
-						$post = $related_post;
-						setup_postdata($post);
-						
-						$related_post_id = get_the_ID();
-						// Collect related post IDs for sidebar exclusion
-						if (!isset($GLOBALS['displayed_posts']) || !is_array($GLOBALS['displayed_posts'])) {
-							$GLOBALS['displayed_posts'] = array();
-						}
-						if (!in_array($related_post_id, $GLOBALS['displayed_posts'])) {
-							$GLOBALS['displayed_posts'][] = $related_post_id;
-						}
+	if ( ! empty($current_festivals) && ! is_wp_error($current_festivals) ) {
+		$festival_term_id = $current_festivals[0]->term_id;
+		$festival_name    = $current_festivals[0]->name;
 
-						// Use plugin's content card
-						require __DIR__ . '/content-card.php';
-					}
-					
-					echo '</div>'; // .festival-wire-grid
-					echo '</div>'; // .related-festival-wire
-					
-					wp_reset_postdata();
+		// Get related posts directly
+		$related_posts = get_posts(array(
+			'post_type'    => 'festival_wire',
+			'numberposts'  => 6,
+			'post__not_in' => array( $current_post_id ),
+			'tax_query'    => array(
+				array(
+					'taxonomy' => 'festival',
+					'field'    => 'term_id',
+					'terms'    => $festival_term_id,
+				),
+			),
+		));
+
+		if ( ! empty($related_posts) ) {
+			echo '<div class="related-tax-section related-festival-wire">';
+			/* translators: %s: Festival name. */
+			echo '<h3 class="related-tax-header">' . sprintf( esc_html__( 'Related %s News', 'extrachill' ), esc_html( $festival_name ) ) . '</h3>';
+			echo '<div class="related-tax-grid festival-wire-grid">';
+
+			// Set up global post data for template parts
+			global $post;
+			foreach ( $related_posts as $related_post ) {
+				$post = $related_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to set up post data for the shared content-card template.
+				setup_postdata( $post );
+
+				$related_post_id = get_the_ID();
+				// Collect related post IDs for sidebar exclusion
+				if ( ! isset( $GLOBALS['displayed_posts'] ) || ! is_array( $GLOBALS['displayed_posts'] ) ) {
+					$GLOBALS['displayed_posts'] = array();
 				}
+				if ( ! in_array( $related_post_id, $GLOBALS['displayed_posts'], true ) ) {
+					$GLOBALS['displayed_posts'][] = $related_post_id;
+				}
+
+				// Use plugin's content card
+				require __DIR__ . '/content-card.php';
 			}
+
+			echo '</div>'; // .festival-wire-grid
+			echo '</div>'; // .related-festival-wire
+
+			wp_reset_postdata();
+		}
+	}
 	?>
 </aside>
 
@@ -134,4 +137,4 @@ get_header(); ?>
 
 <?php do_action( 'extrachill_after_body_content' ); ?>
 
-<?php get_footer(); ?> 
+<?php get_footer(); ?>

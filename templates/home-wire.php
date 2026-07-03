@@ -44,7 +44,8 @@ $latest_posts = get_posts(
 			<div class="festival-wire-grid">
 				<?php
 				global $post;
-				foreach ( $latest_posts as $post ) {
+				foreach ( $latest_posts as $festival_wire_post ) {
+					$post = $festival_wire_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Required to set up post data for the shared content-card template.
 					setup_postdata( $post );
 					require __DIR__ . '/content-card.php';
 				}

@@ -128,7 +128,7 @@ add_filter( 'extrachill_breadcrumbs_override_trail', 'ec_wire_breadcrumb_trail_s
  * @return string Modified label for wire pages, unchanged for homepage
  * @since 0.1.0
  */
-function ec_wire_back_to_home_label( $label, $url ) {
+function ec_wire_back_to_home_label( $label, $url ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $url is part of the filter signature.
 	if ( get_current_blog_id() !== EC_BLOG_ID_WIRE || is_front_page() ) {
 		return $label;
 	}

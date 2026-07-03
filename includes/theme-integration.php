@@ -92,9 +92,9 @@ function ec_news_wire_sidebar_recent_posts( $content ) {
 		++$counter;
 		echo '<div class="post mini-card">';
 		if ( has_post_thumbnail() ) {
-			echo '<a id="post-thumbnail-link-' . $counter . '" href="' . get_permalink() . '" aria-label="Read more about ' . esc_attr( get_the_title() ) . ', an image is attached"><div class="post-thumbnail">' . get_the_post_thumbnail( get_the_ID(), 'medium_large' ) . '</div></a>';
+			echo '<a id="post-thumbnail-link-' . esc_attr( $counter ) . '" href="' . esc_url( get_permalink() ) . '" aria-label="Read more about ' . esc_attr( get_the_title() ) . ', an image is attached"><div class="post-thumbnail">' . get_the_post_thumbnail( get_the_ID(), 'medium_large' ) . '</div></a>';
 		}
-		echo '<h2 class="recent-title"><a id="post-title-link-' . $counter . '" href="' . get_permalink() . '" aria-label="Read more about ' . esc_attr( get_the_title() ) . '">' . get_the_title() . '</a></h2>';
+		echo '<h2 class="recent-title"><a id="post-title-link-' . esc_attr( $counter ) . '" href="' . esc_url( get_permalink() ) . '" aria-label="Read more about ' . esc_attr( get_the_title() ) . '">' . esc_html( get_the_title() ) . '</a></h2>';
 		echo '</div>';
 	endwhile;
 

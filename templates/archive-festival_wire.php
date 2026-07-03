@@ -17,7 +17,8 @@ get_header(); ?>
 			// Display breadcrumbs
 			extrachill_breadcrumbs();
 
-			if ( have_posts() ) : ?>
+			if ( have_posts() ) :
+				?>
 
 				<div class="ec-edge-gutter"><header class="page-header">
 					<h1 class="page-title">Festival Wire</h1>
@@ -32,16 +33,22 @@ get_header(); ?>
 											<option value="all">All Festivals</option>
 											<?php
 											// Get festival filter options
-											$festivals = get_terms(array('taxonomy' => 'festival', 'hide_empty' => true));
+											$festivals     = get_terms(array(
+												'taxonomy' => 'festival',
+												'hide_empty' => true,
+											));
 											$festival_data = array();
-											if (!is_wp_error($festivals)) {
-												foreach ($festivals as $festival) {
-													$festival_data[] = array('slug' => $festival->slug, 'name' => $festival->name);
+											if ( ! is_wp_error($festivals) ) {
+												foreach ( $festivals as $festival ) {
+													$festival_data[] = array(
+														'slug' => $festival->slug,
+														'name' => $festival->name,
+													);
 												}
 											}
-											
-											if (!empty($festival_data)) {
-												foreach ($festival_data as $festival) {
+
+											if ( ! empty($festival_data) ) {
+												foreach ( $festival_data as $festival ) {
 													echo '<option value="' . esc_attr($festival['slug']) . '">' . esc_html($festival['name']) . '</option>';
 												}
 											}
@@ -54,11 +61,14 @@ get_header(); ?>
 									<div class="filter-input">
 										<?php
 										// Get location filter options
-										$locations = get_terms(array('taxonomy' => 'location', 'hide_empty' => true));
-										if (!is_wp_error($locations) && !empty($locations)) {
+										$locations = get_terms(array(
+											'taxonomy'   => 'location',
+											'hide_empty' => true,
+										));
+										if ( ! is_wp_error($locations) && ! empty($locations) ) {
 											echo '<select id="location-filter" class="location-dropdown">';
 											echo '<option value="all">All Locations</option>';
-											foreach ($locations as $location) {
+											foreach ( $locations as $location ) {
 												echo '<option value="' . esc_attr($location->slug) . '">' . esc_html($location->name) . '</option>';
 											}
 											echo '</select>';
@@ -79,18 +89,24 @@ get_header(); ?>
 
 				<?php
 				// --- Display Last Updated Time ---
-				$latest_post = get_posts(array('numberposts' => 1, 'post_type' => 'festival_wire', 'orderby' => 'modified', 'order' => 'DESC'));
+				$latest_post         = get_posts(array(
+					'numberposts' => 1,
+					'post_type'   => 'festival_wire',
+					'orderby'     => 'modified',
+					'order'       => 'DESC',
+				));
 				$last_updated_string = '';
-				
-				if (!empty($latest_post)) {
+
+				if ( ! empty($latest_post) ) {
 					$last_updated_string = 'Last updated: ' . get_the_modified_date('F j, Y \a\t g:i A', $latest_post[0]->ID);
 				}
 
 				// Output the string if it was generated
-				if (!empty($last_updated_string)) : ?>
-				    <div class="festival-wire-last-updated">
-				        <?php echo esc_html($last_updated_string); ?>
-				    </div>
+				if ( ! empty($last_updated_string) ) :
+					?>
+					<div class="festival-wire-last-updated">
+						<?php echo esc_html($last_updated_string); ?>
+					</div>
 				<?php endif; ?>
 				<?php // --- End Display Last Updated Time --- ?>
 
@@ -98,7 +114,8 @@ get_header(); ?>
 					<div id="festival-wire-posts-container" class="festival-wire-grid">
 					<?php
 					/* Start the Loop */
-					while ( have_posts() ) : the_post();
+					while ( have_posts() ) :
+						the_post();
 						/**
 						 * Include the Post-Format-specific template for the content.
 						 * If you want to override this in a child theme, then include a file
@@ -193,11 +210,11 @@ get_header(); ?>
 					</div><!-- .faq-accordion -->
 				</div><!-- .festival-wire-faq-container -->
 
-			<?php
-			else : 
+				<?php
+			else :
 				// If no content, include the "No posts found" template.
 				get_template_part( 'template-parts/content/content', 'none' );
-			?>
+				?>
 			<?php endif; ?>
 
 		</main><!-- #main -->
