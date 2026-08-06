@@ -139,7 +139,6 @@ function ec_news_wire_recent_activity_output_schema() {
  * @return array<string, mixed> Versioned activity projection.
  */
 function ec_news_wire_get_recent_activity( $input = array() ) {
-	$input = is_array( $input ) ? $input : array();
 	$limit = isset( $input['limit'] ) ? (int) $input['limit'] : EC_NEWS_WIRE_RECENT_ACTIVITY_DEFAULT_LIMIT;
 	$limit = max( 1, min( EC_NEWS_WIRE_RECENT_ACTIVITY_MAX_LIMIT, $limit ) );
 
