@@ -27,7 +27,7 @@ do_action( 'extrachill_before_body_content' );
 					</div>
 					<div class="archive-description">Stay updated with the latest music festival news, announcements, and updates.</div>
 					
-					<form class="festival-filter-controls" action="<?php echo esc_url( get_post_type_archive_link( 'festival_wire' ) ); ?>" method="get">
+					<form class="festival-filter-controls" action="<?php echo esc_url( (string) get_post_type_archive_link( 'festival_wire' ) ); ?>" method="get">
 						<div class="festival-filter-inner">
 							<div class="filter-dropdowns">
 								<div class="filter-group">
@@ -85,7 +85,7 @@ do_action( 'extrachill_before_body_content' );
 							</div>
 							<div class="filter-actions">
 								<button id="festival-filter-button" class="filter-button button-1 button-medium" type="submit">Apply Filters</button>
-								<a href="<?php echo esc_url(get_post_type_archive_link('festival_wire')); ?>" class="filter-reset">Reset Filters</a>
+								<a href="<?php echo esc_url( (string) get_post_type_archive_link( 'festival_wire' ) ); ?>" class="filter-reset">Reset Filters</a>
 							</div>
 						</div>
 					</form>

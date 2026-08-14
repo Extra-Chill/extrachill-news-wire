@@ -51,7 +51,9 @@
 
                 select.replaceChildren();
                 matches.forEach(function(optionData) {
-                    const option = new Option(optionData.text, optionData.value);
+                    const option = document.createElement('option');
+                    option.text = optionData.text;
+                    option.value = optionData.value;
                     option.disabled = optionData.disabled;
                     option.selected = optionData.value === selectedValue;
                     select.add(option);
